@@ -1,6 +1,7 @@
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,9 +11,10 @@
 .bg {
   position: absolute;
   inset: 0;
-  background-image: url("https://images.pexels.com/photos/4894990/pexels-photo-4894990.jpeg");
+  background-image: url('https://images.pexels.com/photos/4894990/pexels-photo-4894990.jpeg?auto=compress&cs=tinysrgb&w=1920');
   background-size: cover;
   background-position: center 30%;
+  will-change: transform;
 }
 
 .overlay {
@@ -29,34 +31,79 @@
   position: relative;
   z-index: 1;
   text-align: center;
-  padding: var(--space-xl);
+  padding: var(--space-lg);
   max-width: 680px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding: var(--space-xl);
+  }
 }
 
 .headline {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: clamp(2.5rem, 5.5vw, 4rem);
+  font-size: clamp(2rem, 5.5vw, 4rem);
   color: var(--color-white);
   line-height: 1.15;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .headline {
+    margin-bottom: var(--space-lg);
+  }
 }
 
 .sub {
-  font-size: clamp(0.9375rem, 1.25vw, 1.0625rem);
+  font-size: clamp(0.875rem, 1.25vw, 1.0625rem);
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.7;
-  margin-bottom: var(--space-2xl);
+  margin-bottom: var(--space-xl);
   max-width: 480px;
   margin-left: auto;
   margin-right: auto;
 }
 
+@media (min-width: 768px) {
+  .sub {
+    margin-bottom: var(--space-2xl);
+  }
+}
+
 .ctas {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-md);
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+@media (min-width: 480px) {
+  .ctas {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: center;
+  }
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  width: 100%;
+  text-align: center;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .ctaPrimary,
+  .ctaSecondary {
+    width: auto;
+  }
 }
 
 .ctaPrimary {
@@ -90,9 +137,20 @@
 
 .scroll {
   position: absolute;
-  bottom: var(--space-xl);
+  bottom: var(--space-lg);
   left: 50%;
   transform: translateX(-50%);
   color: rgba(255, 255, 255, 0.45);
   z-index: 1;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 479px) {
+  .scroll {
+    display: none;
+  }
 }

@@ -7,8 +7,15 @@
 .header {
   text-align: center;
   max-width: 460px;
-  margin: 0 auto var(--space-2xl);
-  padding: 0 var(--space-lg);
+  margin: 0 auto var(--space-xl);
+  padding: 0 var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .header {
+    margin-bottom: var(--space-2xl);
+    padding: 0 var(--space-lg);
+  }
 }
 
 .title {
@@ -30,13 +37,21 @@
     black 97%,
     transparent 100%
   );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
 }
 
 .marquee {
   display: flex;
-  gap: var(--space-lg);
+  gap: var(--space-md);
   width: max-content;
   animation: scroll 50s linear infinite;
+  will-change: transform;
 }
 
 .marquee:hover {
@@ -45,10 +60,10 @@
 
 @keyframes scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -60,8 +75,8 @@
 
 .card {
   flex-shrink: 0;
-  width: 300px;
-  padding: var(--space-xl);
+  width: 260px;
+  padding: var(--space-lg);
   background: var(--color-white);
   border: 1px solid var(--color-cream);
   border-radius: var(--radius-lg);
@@ -69,16 +84,35 @@
   flex-direction: column;
 }
 
+@media (min-width: 480px) {
+  .card {
+    width: 280px;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    width: 300px;
+    padding: var(--space-xl);
+  }
+}
+
 .cardTop {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   margin-bottom: var(--space-md);
 }
 
+@media (min-width: 480px) {
+  .cardTop {
+    gap: var(--space-md);
+  }
+}
+
 .icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -88,9 +122,22 @@
   flex-shrink: 0;
 }
 
+@media (min-width: 768px) {
+  .icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 .cardTitle {
   color: var(--color-primary);
-  font-size: 1.0625rem;
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .cardTitle {
+    font-size: 1.0625rem;
+  }
 }
 
 .cardText {

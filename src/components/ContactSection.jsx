@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import styles from './ContactSection.module.css';
+
+const FIELD_LIMITS = { name: 100, email: 100, phone: 20, message: 1000 };
 
 function sanitizeInput(str) {
   if (typeof str !== 'string') return '';
@@ -10,10 +12,11 @@ function sanitizeInput(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
     .trim();
 }
 
-export default function ContactSection() {
+const ContactSection = memo(function ContactSection() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,43 +26,49 @@ export default function ContactSection() {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
-  const validate = () => {
-    const newErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[\d\s\-+()]{10,}$/;
+  const validate = useCallback(() => {
+    const e = {};
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRe = /^[\d\s\-+()]{10,}$/;
 
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!emailRegex.test(formData.email)) newErrors.email = 'Invalid email';
-    if (formData.phone && !phoneRegex.test(formData.phone))
-      newErrors.phone = 'Invalid phone number';
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    if (!formData.name.trim()) e.name = 'Name is required';
+    if (!formData.email.trim()) e.email = 'Email is required';
+    else if (!emailRe.test(formData.email)) e.email = 'Invalid email';
+    if (formData.phone && !phoneRe.test(formData.phone))
+      e.phone = 'Invalid phone number';
+    if (!formData.message.trim()) e.message = 'Message is required';
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  }, [formData]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  const handleSubmit = useCallback(
+    (ev) => {
+      ev.preventDefault();
+      if (!validate()) return;
 
-    const sanitized = {
-      name: sanitizeInput(formData.name),
-      email: sanitizeInput(formData.email),
-      phone: sanitizeInput(formData.phone),
-      message: sanitizeInput(formData.message),
-    };
+      const sanitized = {
+        name: sanitizeInput(formData.name),
+        email: sanitizeInput(formData.email),
+        phone: sanitizeInput(formData.phone),
+        message: sanitizeInput(formData.message),
+      };
 
-    console.log('Form submitted:', sanitized);
-    setSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', message: '' });
-  };
+      console.log('Form submitted:', sanitized);
+      setSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    },
+    [formData, validate],
+  );
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
-  };
+  const handleChange = useCallback(
+    (ev) => {
+      const { name, value } = ev.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+    },
+    [errors],
+  );
 
   return (
     <section id="contact" className={styles.section}>
@@ -85,66 +94,82 @@ export default function ContactSection() {
           transition={{ duration: 0.5 }}
         >
           {submitted ? (
-            <div className={styles.success}>
+            <div className={styles.success} role="status">
               <p>Thank you! We&apos;ll get back to you within 24 hours.</p>
             </div>
           ) : (
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form
+              className={styles.form}
+              onSubmit={handleSubmit}
+              noValidate
+              autoComplete="on"
+            >
               <div className={styles.field}>
-                <label htmlFor="name">Name *</label>
+                <label htmlFor="contact-name">Name *</label>
                 <input
                   type="text"
-                  id="name"
+                  id="contact-name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Your name"
-                  maxLength={100}
+                  maxLength={FIELD_LIMITS.name}
+                  autoComplete="name"
                   className={errors.name ? styles.inputError : ''}
                 />
-                {errors.name && <span className={styles.error}>{errors.name}</span>}
+                {errors.name && (
+                  <span className={styles.error} role="alert">{errors.name}</span>
+                )}
               </div>
               <div className={styles.field}>
-                <label htmlFor="email">Email *</label>
+                <label htmlFor="contact-email">Email *</label>
                 <input
                   type="email"
-                  id="email"
+                  id="contact-email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="your@email.com"
-                  maxLength={100}
+                  maxLength={FIELD_LIMITS.email}
+                  autoComplete="email"
                   className={errors.email ? styles.inputError : ''}
                 />
-                {errors.email && <span className={styles.error}>{errors.email}</span>}
+                {errors.email && (
+                  <span className={styles.error} role="alert">{errors.email}</span>
+                )}
               </div>
               <div className={styles.field}>
-                <label htmlFor="phone">Phone</label>
+                <label htmlFor="contact-phone">Phone</label>
                 <input
                   type="tel"
-                  id="phone"
+                  id="contact-phone"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+91 98765 43210"
-                  maxLength={20}
+                  maxLength={FIELD_LIMITS.phone}
+                  autoComplete="tel"
                   className={errors.phone ? styles.inputError : ''}
                 />
-                {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+                {errors.phone && (
+                  <span className={styles.error} role="alert">{errors.phone}</span>
+                )}
               </div>
               <div className={styles.field}>
-                <label htmlFor="message">Message *</label>
+                <label htmlFor="contact-message">Message *</label>
                 <textarea
-                  id="message"
+                  id="contact-message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us about your riding goals..."
                   rows={4}
-                  maxLength={1000}
+                  maxLength={FIELD_LIMITS.message}
                   className={errors.message ? styles.inputError : ''}
                 />
-                {errors.message && <span className={styles.error}>{errors.message}</span>}
+                {errors.message && (
+                  <span className={styles.error} role="alert">{errors.message}</span>
+                )}
               </div>
               <button type="submit" className={styles.submit}>
                 Send Message
@@ -172,24 +197,26 @@ export default function ContactSection() {
           </div>
           <div className={styles.details}>
             <div className={styles.item}>
-              <MapPin size={16} />
+              <MapPin size={16} aria-hidden="true" />
               <span>Near Indroda Nature Park, Sector 7, Gandhinagar, Gujarat 382007</span>
             </div>
             <div className={styles.item}>
-              <Phone size={16} />
-              <a href="tel:+919876543210">+91 98765 43210</a>
+              <Phone size={16} aria-hidden="true" />
+              <a href="tel:+919876543210" rel="noopener">+91 98765 43210</a>
             </div>
             <div className={styles.item}>
-              <Mail size={16} />
-              <a href="mailto:info@royalequestrianacademy.in">info@royalequestrianacademy.in</a>
+              <Mail size={16} aria-hidden="true" />
+              <a href="mailto:info@royalequestrianacademy.in" rel="noopener">info@royalequestrianacademy.in</a>
             </div>
             <div className={styles.item}>
-              <Clock size={16} />
-              <span>Mon–Sat: 6 AM – 7 PM &nbsp;|&nbsp; Sun: 8 AM – 4 PM</span>
+              <Clock size={16} aria-hidden="true" />
+              <span>Mon–Sat: 6 AM – 7 PM | Sun: 8 AM – 4 PM</span>
             </div>
           </div>
         </motion.div>
       </div>
     </section>
   );
-}
+});
+
+export default ContactSection;

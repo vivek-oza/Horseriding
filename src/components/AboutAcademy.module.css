@@ -6,13 +6,19 @@
   max-width: 1060px;
   margin: 0 auto;
   display: grid;
-  gap: var(--space-2xl);
+  gap: var(--space-xl);
   align-items: center;
 }
 
 @media (min-width: 768px) {
   .container {
     grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
     gap: var(--space-3xl);
   }
 }
@@ -24,8 +30,26 @@
 
 .image {
   width: 100%;
-  height: 480px;
+  height: 280px;
   object-fit: cover;
+}
+
+@media (min-width: 480px) {
+  .image {
+    height: 360px;
+  }
+}
+
+@media (min-width: 768px) {
+  .image {
+    height: 420px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .image {
+    height: 480px;
+  }
 }
 
 .content {
@@ -46,10 +70,16 @@
 
 .stats {
   display: flex;
-  gap: var(--space-2xl);
+  gap: var(--space-xl);
   margin-top: var(--space-md);
   padding-top: var(--space-lg);
   border-top: 1px solid var(--color-cream);
+}
+
+@media (min-width: 768px) {
+  .stats {
+    gap: var(--space-2xl);
+  }
 }
 
 .stat {
@@ -61,19 +91,25 @@
 .statNum {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--color-primary);
 }
 
+@media (min-width: 480px) {
+  .statNum {
+    font-size: 1.5rem;
+  }
+}
+
 .statLabel {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--color-text-light);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
-@media (max-width: 767px) {
-  .image {
-    height: 320px;
+@media (min-width: 480px) {
+  .statLabel {
+    font-size: 0.75rem;
   }
 }

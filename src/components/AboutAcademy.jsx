@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import styles from './AboutAcademy.module.css';
 
-export default function AboutAcademy() {
+const AboutAcademy = memo(function AboutAcademy() {
   return (
     <section id="about" className={styles.section}>
       <div className={styles.container}>
@@ -13,10 +14,13 @@ export default function AboutAcademy() {
           transition={{ duration: 0.7 }}
         >
           <img
-            src="https://images.pexels.com/photos/15358606/pexels-photo-15358606.jpeg"
+            src="https://images.pexels.com/photos/15358606/pexels-photo-15358606.jpeg?auto=compress&cs=tinysrgb&w=800"
             alt="Student learning horse riding at Royal Equestrian Academy Gandhinagar"
             className={styles.image}
             loading="lazy"
+            decoding="async"
+            width={800}
+            height={1067}
           />
         </motion.div>
 
@@ -57,4 +61,6 @@ export default function AboutAcademy() {
       </div>
     </section>
   );
-}
+});
+
+export default AboutAcademy;
