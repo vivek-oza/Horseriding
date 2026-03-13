@@ -1,0 +1,130 @@
+.section {
+  background: var(--color-background);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.header {
+  text-align: center;
+  max-width: 460px;
+  margin: 0 auto var(--space-2xl);
+  padding: 0 var(--space-lg);
+}
+
+.title {
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.subtitle {
+  color: var(--color-text-light);
+  font-size: 0.9375rem;
+}
+
+.marqueeWrap {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+}
+
+.marquee {
+  display: flex;
+  gap: var(--space-lg);
+  width: max-content;
+  animation: scroll 50s linear infinite;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
+}
+
+.card {
+  flex-shrink: 0;
+  width: 300px;
+  padding: var(--space-xl);
+  background: var(--color-white);
+  border: 1px solid var(--color-cream);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary);
+  background: rgba(201, 169, 110, 0.1);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  color: var(--color-primary);
+  font-size: 1.0625rem;
+}
+
+.cardText {
+  color: var(--color-text-light);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  margin-bottom: var(--space-md);
+  flex: 1;
+}
+
+.details {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-cream);
+}
+
+.details li {
+  font-size: 0.75rem;
+  color: var(--color-text-primary);
+  padding-left: 0.875rem;
+  position: relative;
+  line-height: 1.5;
+}
+
+.details li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+}

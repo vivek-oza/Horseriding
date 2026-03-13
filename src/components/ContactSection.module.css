@@ -1,0 +1,147 @@
+.section {
+  background: var(--color-white);
+}
+
+.header {
+  text-align: center;
+  max-width: 420px;
+  margin: 0 auto var(--space-2xl);
+}
+
+.title {
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.subtitle {
+  color: var(--color-text-light);
+  font-size: 0.9375rem;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-2xl);
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.field input,
+.field textarea {
+  padding: 0.625rem 0.875rem;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  border: 1px solid var(--color-cream);
+  border-radius: var(--radius-md);
+  background: var(--color-background);
+  transition: border-color var(--transition-fast);
+  color: var(--color-text-primary);
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+}
+
+.field input.inputError,
+.field textarea.inputError {
+  border-color: #c94a4a;
+}
+
+.error {
+  font-size: 0.75rem;
+  color: #c94a4a;
+}
+
+.submit {
+  padding: 0.7rem 1.5rem;
+  background: var(--color-secondary);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+  align-self: flex-start;
+}
+
+.submit:hover {
+  background: var(--color-accent);
+}
+
+.success {
+  padding: var(--space-xl) 0;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.mapWrap {
+  overflow: hidden;
+  height: 220px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-cream);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+}
+
+.item svg {
+  flex-shrink: 0;
+  color: var(--color-secondary);
+  margin-top: 3px;
+}
+
+.item a {
+  color: var(--color-text-primary);
+}
+
+.item a:hover {
+  color: var(--color-secondary);
+}
